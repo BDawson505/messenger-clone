@@ -2,6 +2,7 @@
 import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { BsGithub, BsGoogle } from "react-icons/bs";
+import axios from "axios";
 
 import Input from "@/app/components/inputs/Input";
 import Button from "@/app/components/Button";
@@ -37,7 +38,7 @@ const AuthForm = () => {
     setIsLoading(true);
 
     if (variant === "REGISTER") {
-      // Axios Register
+      axios.post("/api/register", data);
     }
 
     if (variant === "LOGIN") {
@@ -139,7 +140,7 @@ const AuthForm = () => {
             />
 
             <AuthSocialButton
-              icon={BsGithub}
+              icon={BsGoogle}
               onClick={() => socialAction("google")}
             />
           </div>
