@@ -15,7 +15,7 @@ export async function DELETE(
     const currentUser = await getCurrentUser();
 
     if (!currentUser?.id) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return NextResponse.json(null);
     }
 
     const existingConversation = await prisma.conversation.findUnique({
