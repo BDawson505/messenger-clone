@@ -27,7 +27,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
             seen: true,
           },
         },
-        user: true,
+        users: true,
       },
     });
 

@@ -49,7 +49,7 @@ export async function POST(request: Request) {
         },
       },
       include: {
-        user: true,
+        users: true,
         messages: {
           include: {
             seen: true,
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     await pusherServer.trigger(conversationId, "messages:new", newMessage);
     const lastMessage =
       updatedConversation.messages[updatedConversation.messages.length - 1];
-    updatedConversation.user.map((user) => {
+    updatedConversation.users.map((user) => {
       pusherServer.trigger(user.email!, "conversation:update", {
         id: conversationId,
         messages: [lastMessage],
