@@ -1,5 +1,6 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
+
 import prisma from "@/app/libs/prismadb";
 import { pusherServer } from "@/app/libs/pusher";
 
@@ -41,19 +42,18 @@ export async function DELETE(
       },
     });
 
-    existingConversation.users.forEach((u) => {
-      if (u.email) {
+    existingConversation.users.forEach((user) => {
+      if (user.email) {
         pusherServer.trigger(
-          u.email,
+          user.email,
           "conversation:remove",
           existingConversation,
         );
       }
     });
 
-    return NextResponse.json("Deleted Conversation");
-  } catch (error: any) {
-    console.log(error, "ERROR_CONVERSATION_DELETE");
-    return new NextResponse("Internal Error", { status: 500 });
+    return NextResponse.json(deletedConversation);
+  } catch (error) {
+    return NextResponse.json(null);
   }
 }

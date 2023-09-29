@@ -6,6 +6,6 @@ export type FullMessageType = Message & {
 };
 
 export type FullConversationType = Conversation & {
-  user: User[];
+  users: User[];
   messages: FullMessageType[];
 };

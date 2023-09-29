@@ -1,12 +1,10 @@
-"use client";
-
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";
 
 import Avatar from "@/app/components/Avatar";
-import LoadingModal from "@/app/components/LoadingModal";
+import LoadingModal from "@/app/components/modals/LoadingModal";
 
 interface UserBoxProps {
   data: User;
@@ -20,9 +18,7 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
     setIsLoading(true);
 
     axios
-      .post("/api/conversations", {
-        userId: data.id,
-      })
+      .post("/api/conversations", { userId: data.id })
       .then((data) => {
         router.push(`/conversations/${data.data.id}`);
       })
@@ -32,44 +28,28 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
   return (
     <>
       {isLoading && <LoadingModal />}
-
       <div
         onClick={handleClick}
         className='
-        w-full
-        relative
-        flex
-        items-center
-        space-x-3
-        bg-white
-        p-3
-        hover:bg-neutral-100
-        rounded-lg
-        transition
-        cursor-pointer
-    '
+          w-full 
+          relative 
+          flex 
+          items-center 
+          space-x-3 
+          bg-white 
+          p-3 
+          hover:bg-neutral-100
+          rounded-lg
+          transition
+          cursor-pointer
+        '
       >
         <Avatar user={data} />
-
         <div className='min-w-0 flex-1'>
           <div className='focus:outline-none'>
-            <div
-              className='
-                flex
-                justify-between
-                items-center
-                mb-1
-            '
-            >
-              <p
-                className='
-                    text-sm
-                    font-medium
-                    text-grey-900
-                '
-              >
-                {data.name}
-              </p>
+            <span className='absolute inset-0' aria-hidden='true' />
+            <div className='flex justify-between items-center mb-1'>
+              <p className='text-sm font-medium text-gray-900'>{data.name}</p>
             </div>
           </div>
         </div>

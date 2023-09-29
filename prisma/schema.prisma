@@ -56,7 +56,7 @@ model Conversation {
   name String?
   isGroup Boolean?
   
-  messageIds String[] @db.ObjectId
+  messagesIds String[] @db.ObjectId
   messages Message[]
 
   userIds String[] @db.ObjectId

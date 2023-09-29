@@ -1,20 +1,21 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
 
-import { FullMessageType } from "@/app/types";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+
+import { pusherClient } from "@/app/libs/pusher";
 import useConversation from "@/app/hooks/useConversation";
 import MessageBox from "./MessageBox";
-import { pusherClient } from "@/app/libs/pusher";
+import { FullMessageType } from "@/app/types";
 import { find } from "lodash";
 
 interface BodyProps {
   initialMessages: FullMessageType[];
 }
 
-const Body: React.FC<BodyProps> = ({ initialMessages }) => {
-  const [messages, setMessages] = useState(initialMessages);
+const Body: React.FC<BodyProps> = ({ initialMessages = [] }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const [messages, setMessages] = useState(initialMessages);
 
   const { conversationId } = useConversation();
 
@@ -58,25 +59,20 @@ const Body: React.FC<BodyProps> = ({ initialMessages }) => {
     return () => {
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind("messages:new", messageHandler);
-      pusherClient.unbind("messages:update", updateMessageHandler);
+      pusherClient.unbind("message:update", updateMessageHandler);
     };
   }, [conversationId]);
 
   return (
-    <div
-      className='
-        flex-1
-        overflow-y-auto
-    '
-    >
-      {messages.map((message, index) => (
+    <div className='flex-1 overflow-y-auto'>
+      {messages.map((message, i) => (
         <MessageBox
-          isLast={index === messages.length - 1}
+          isLast={i === messages.length - 1}
           key={message.id}
           data={message}
         />
       ))}
-      <div ref={bottomRef} className='pt-24' />
+      <div className='pt-24' ref={bottomRef} />
     </div>
   );
 };
